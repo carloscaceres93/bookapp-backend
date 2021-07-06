@@ -107,19 +107,6 @@ public class UsuarioServiceImpl implements IUsuarioService {
 	}
 
 	@Override
-	public Usuario deshabilitarUsuario(Usuario usuario) throws Exception {
-		Optional<Usuario> user = usuarioRepo.findById(usuario.getIdUsuario());
-		
-		if(user.isEmpty()) {
-			throw new ModeloNotFoundException("No se encontraron datos disponibles");
-		}
-		
-		user.get().setEstado(false);
-		usuarioRepo.save(user.get());
-		return user.get();
-	}
-
-	@Override
 	public Usuario findOneByUsername(String username) throws Exception {
 		return usuarioRepo.findOneByUsername(username);
 	}

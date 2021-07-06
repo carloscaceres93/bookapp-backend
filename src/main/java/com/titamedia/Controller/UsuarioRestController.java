@@ -74,13 +74,7 @@ public class UsuarioRestController {
 				.toUri();
 		return ResponseEntity.created(location).build();
 	}
-
-	@PutMapping("/deshabilitar")
-	public ResponseEntity<Void> deshabilitarUsuario(@Valid @RequestBody Usuario usuario) throws Exception {
-		usuarioService.deshabilitarUsuario(usuario);
-		return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
-	}
-
+	
 	@GetMapping("/prueba/{user}")
 	public EntityModel<Usuario> findOneByUsername(@PathVariable("user") String username) throws Exception {
 		Usuario obj = usuarioService.findOneByUsername(username);
