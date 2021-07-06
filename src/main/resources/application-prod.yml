@@ -1,0 +1,12 @@
+spring:
+  jpa:
+    database: MYSQL
+    show-sql: true
+    hibernate:
+      ddl-auto: none
+  datasource:
+    url: jdbc:mysql://titamediapp-db/titamediapp_db?createDatabaseIfNotExist=true&serverTimezone=UTC
+    username : root
+    password: titamedia12345
+server:
+  port: 8291

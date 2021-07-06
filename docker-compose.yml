@@ -1,0 +1,28 @@
+version: '3.1'
+services:
+  titamediapp-backend:
+    image: titamediapp-backend
+    container_name: titamediapp-backend
+    restart: always
+    build: 
+      context: ./
+    ports:  
+    - "8291:8291"
+    depends_on:
+      - titamediapp-db
+    networks:
+    - network_titamedia
+
+  titamediapp-db:
+    image: mysql:8.0
+    container_name: titamediapp-db
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: titamedia12345
+    networks:
+    - network_titamedia
+    
+networks:
+  network_titamedia:
+     external: true
