@@ -26,66 +26,66 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.titamedia.model.Categoria;
-import com.titamedia.service.ICategoriaService;
+import com.titamedia.model.Tarifa;
+import com.titamedia.service.ITarifaService;
 
 @RestController
-@RequestMapping("/api/categorias")
-public class CategoriaRestController {
+@RequestMapping("/api/tarifas")
+public class TarifaResController {
 
 	@Autowired
-	private ICategoriaService categoriaService;
+	private ITarifaService tarifaService;
 
 	@GetMapping
-	public ResponseEntity<List<Categoria>> listar() throws Exception {
-		List<Categoria> Categorias = categoriaService.listar();
-		return new ResponseEntity<List<Categoria>>(Categorias, HttpStatus.OK);
+	public ResponseEntity<List<Tarifa>> listar() throws Exception {
+		List<Tarifa> tarifas = tarifaService.listar();
+		return new ResponseEntity<List<Tarifa>>(tarifas, HttpStatus.OK);
 	}
 	
 	@PreAuthorize("@authServiceImpl.tieneAcceso('admin')")
 	@GetMapping("/pageable")
-	public ResponseEntity<Page<Categoria>> listarPageable(Pageable pageable) throws Exception {
-		Page<Categoria> categorias = categoriaService.listarPageable(pageable);
-		return new ResponseEntity<Page<Categoria>>(categorias, HttpStatus.OK);
+	public ResponseEntity<Page<Tarifa>> listarPageable(Pageable pageable) throws Exception {
+		Page<Tarifa> tarifas = tarifaService.listarPageable(pageable);
+		return new ResponseEntity<Page<Tarifa>>(tarifas, HttpStatus.OK);
 	}
 
 	@PreAuthorize("@authServiceImpl.tieneAcceso('admin')")
 	@GetMapping("/{id}")
-	public EntityModel<Categoria> listarPorId(@PathVariable("id") Integer id) throws Exception {
-		Categoria obj = categoriaService.listarPorId(id);
+	public EntityModel<Tarifa> listarPorId(@PathVariable("id") Integer id) throws Exception {
+		Tarifa obj = tarifaService.listarPorId(id);
 
-		EntityModel<Categoria> recurso = EntityModel.of(obj);
+		EntityModel<Tarifa> recurso = EntityModel.of(obj);
 		WebMvcLinkBuilder link = linkTo(methodOn(this.getClass()).listarPorId(id));
-		recurso.add(link.withRel("Categoria-recurso"));
+		recurso.add(link.withRel("tarifa-recurso"));
 
 		return recurso;
 	}
 
 	@PreAuthorize("@authServiceImpl.tieneAcceso('admin')")
 	@PostMapping
-	public ResponseEntity<Categoria> registrar(@Valid @RequestBody Categoria categoria) throws Exception {
+	public ResponseEntity<Tarifa> registrar(@Valid @RequestBody Tarifa tarifa) throws Exception {
 
-		Categoria obj = categoriaService.registrar(categoria);
+		Tarifa obj = tarifaService.registrar(tarifa);
 
 		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
-				.buildAndExpand(obj.getIdCategoria()).toUri();
+				.buildAndExpand(obj.getIdTarifa()).toUri();
 		return ResponseEntity.created(location).build();
 	}
 
 	@PreAuthorize("@authServiceImpl.tieneAcceso('admin')")
 	@PutMapping
-	public ResponseEntity<Categoria> modificar(@Valid @RequestBody Categoria categoria) throws Exception {
-		Categoria obj = categoriaService.modificar(categoria);
+	public ResponseEntity<Tarifa> modificar(@Valid @RequestBody Tarifa tarifa) throws Exception {
+		Tarifa obj = tarifaService.modificar(tarifa);
 
 		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
-				.buildAndExpand(obj.getIdCategoria()).toUri();
+				.buildAndExpand(obj.getIdTarifa()).toUri();
 		return ResponseEntity.created(location).build();
 	}
 
 	@PreAuthorize("@authServiceImpl.tieneAcceso('admin')")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> eliminar(@PathVariable("id") Integer id) throws Exception {
-		categoriaService.eliminar(id);
+		tarifaService.eliminar(id);
 		return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
 	}
 

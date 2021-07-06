@@ -18,4 +18,6 @@ public interface IReservaService extends ICRUD<Reserva, Integer>{
 	Page<Reserva> listarPaginado(Pageable pageable)throws Exception;
 	
 	Reserva registarTransacional(Reserva reserva)throws Exception;
+	
+	Reserva liberarReserva(Reserva reserva)throws Exception;
 }

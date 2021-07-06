@@ -12,7 +12,7 @@ public interface IUsuarioRepository extends IGenericRepository<Usuario, Integer>
 	
 	Usuario findOneByUsername(String username);	
 	
-	@Query("select rol.nombre from Usuario usu join UsuarioRol usr on usu.id = usr.usuario.id "
+	@Query("select rol.nombre from Usuario usu join UsuarioRol usr on usu.idUsuario = usr.usuario.idUsuario "
 			+ "join usr.rol rol where usu.username = :usuario")
 	List<String> buscarRolePorUsuario(@Param("usuario") String usuario);
 	

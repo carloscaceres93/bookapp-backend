@@ -26,7 +26,7 @@ public class Usuario {
 	@Column(name = "usuario", nullable = false, unique = true)
 	private String username;
 
-	@Size(min = 8, message = "la clave debe contener minmo 8 caracteres")
+	@Size(min = 4, message = "la clave debe contener minmo 4 caracteres")
 	@NotNull(message = "campo 'clave' oblogatorio")
 	@Column(name = "clave", nullable = false)
 	private String password;

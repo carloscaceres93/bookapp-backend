@@ -1,4 +1,4 @@
-package com.titamedia.Controller;
+package com.titamedia.controller;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
@@ -15,6 +15,7 @@ import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -35,17 +36,20 @@ public class LibroRestController {
 	@Autowired
 	private ILibroService libroService;
 
+
 	@GetMapping
 	public ResponseEntity<List<Libro>> listar() throws Exception {
 		List<Libro> Libros = libroService.listar();
 		return new ResponseEntity<List<Libro>>(Libros, HttpStatus.OK);
 	}
 	
+
 	@GetMapping("idCategoria/{id}")
 	public ResponseEntity<List<Libro>> listarPorCategoria(@PathVariable("id") Integer id) throws Exception {
 		List<Libro> Libros = libroService.listarPorCategoria(id);
 		return new ResponseEntity<List<Libro>>(Libros, HttpStatus.OK);
 	}
+
 
 	@GetMapping("/pageable")
 	public ResponseEntity<Page<Libro>> listarPageable(Pageable pageable) throws Exception {
@@ -70,6 +74,7 @@ public class LibroRestController {
 		return recurso;
 	}
 
+	@PreAuthorize("@authServiceImpl.tieneAcceso('admin')")
 	@PostMapping
 	public ResponseEntity<Libro> registrar(@Valid @RequestBody Libro libro) throws Exception {
 
@@ -80,6 +85,7 @@ public class LibroRestController {
 		return ResponseEntity.created(location).build();
 	}
 
+	@PreAuthorize("@authServiceImpl.tieneAcceso('admin')")
 	@PutMapping
 	public ResponseEntity<Libro> modificar(@Valid @RequestBody Libro libro) throws Exception {
 		Libro obj = libroService.modificar(libro);
@@ -89,6 +95,7 @@ public class LibroRestController {
 		return ResponseEntity.created(location).build();
 	}
 
+	@PreAuthorize("@authServiceImpl.tieneAcceso('admin')")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> eliminar(@PathVariable("id") Integer id) throws Exception {
 		libroService.eliminar(id);

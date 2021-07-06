@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,25 +28,31 @@ public class UsuarioServiceImpl implements IUsuarioService {
 	
 	@Autowired
 	private IRolRepository rolRepo;
+	
+	@Autowired
+	private BCryptPasswordEncoder bcrypt;
 
 	@Transactional
 	@Override
 	public Usuario registrar(Usuario t) throws Exception {
-		Optional<Usuario> validarUaurio = usuarioRepo.validarExisteUusario(t.getUsername());
+		Optional<Usuario> validarUsaurio = usuarioRepo.validarExisteUusario(t.getUsername());
 		UsuarioRol usuarioRol = new UsuarioRol();
 		Usuario usuario = new Usuario();
 		Optional<Rol> rol = rolRepo.findById(Rol.ID.CLIENTE); 
 		
 		
-		if (validarUaurio.isPresent()) {
+		if (validarUsaurio.isPresent()) {
 			throw new ModeloNotFoundException("El usuario ya existe en la base de datos");
 		}
 		
 		if(t.getPassword().isEmpty()) {
 			throw new ModeloNotFoundException("La contraseña es obligatoria");
 		}
-
-		usuario = usuarioRepo.save(t);
+		usuario.setUsername(t.getUsername());
+		usuario.setPassword(bcrypt.encode(t.getPassword()));
+		usuario.setEstado(t.getEstado());
+		
+		usuarioRepo.save(usuario);
 		
 		usuarioRol.setUsuario(usuario);
 		usuarioRol.setRol(rol.get());

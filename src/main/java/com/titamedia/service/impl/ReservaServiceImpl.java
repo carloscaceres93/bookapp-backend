@@ -1,6 +1,5 @@
 package com.titamedia.service.impl;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -8,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.titamedia.exception.ModeloNotFoundException;
 import com.titamedia.model.Libro;
@@ -71,7 +71,7 @@ public class ReservaServiceImpl extends CRUDImpl<Reserva, Integer> implements IR
 
 	@Override
 	public Page<Reserva> listarPaginado(Pageable pageable) throws Exception {
-		Page<Reserva> reservas = reservaRepo.findAll(pageable);
+		Page<Reserva> reservas = reservaRepo.listarReservasDisponibles(pageable);
 		
 		if(reservas.isEmpty()) {
 			throw new ModeloNotFoundException("No se encontraron reservas disponibles");
@@ -97,16 +97,31 @@ public class ReservaServiceImpl extends CRUDImpl<Reserva, Integer> implements IR
 			throw new ModeloNotFoundException("No se ha podido encontrar el usuario");
 		}
 		
-		if(reserva.getFechaDevolucion().compareTo(LocalDate.now())<= 0) {
-			throw new ModeloNotFoundException("La fecha de devolución no puede ser menor a la fecha de reserva");
-		}
-		
 		if(reserva.getCantidad() > numLibrosDisponibles) {
-			throw new ModeloNotFoundException("No hay esa cantidad de libros disponibles");
+			throw new ModeloNotFoundException("Solo existen " + numLibrosDisponibles +" disponibles" );
 		}
 		
 		libro.get().setCantidadDisponible(numLibrosDisponibles - reserva.getCantidad());
 		libro.get().setCantidadReservada(libro.get().getCantidadReservada() + reserva.getCantidad());
+		
+		libroRepo.save(libro.get());
+		
+		return reservaRepo.save(reserva);
+	}
+
+	@Transactional
+	@Override
+	public Reserva liberarReserva(Reserva reserva) throws Exception {
+		Optional<Reserva> r = reservaRepo.findById(reserva.getIdReserva());
+		Optional<Libro> libro = libroRepo.findById(r.get().getLibro().getIdLibro());
+		Integer numLibrosDisponibles = libro.get().getCantidadDisponible();;
+		
+		if(!r.isPresent()) {
+			throw new ModeloNotFoundException("La reserva no existe");
+		}
+		
+		libro.get().setCantidadDisponible(numLibrosDisponibles + reserva.getCantidad());
+		libro.get().setCantidadReservada(libro.get().getCantidadReservada() - reserva.getCantidad());
 		
 		libroRepo.save(libro.get());
 		

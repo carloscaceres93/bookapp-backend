@@ -18,4 +18,5 @@ public interface IReservaRepository extends IGenericRepository<Reserva, Integer>
 	
 	@Query("FROM Reserva r WHERE r.estado = true")
 	Page<Reserva> listarReservasDisponibles(Pageable pageable);
+	
 }

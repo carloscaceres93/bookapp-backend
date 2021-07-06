@@ -23,7 +23,7 @@ public class Libro {
 	private Integer idLibro;
 
 	@NotNull(message = "Campo 'nombre' obligatorio")
-	@Size(min = 7, message = "El nombre debe contener minimo 7 letras")
+	@Size(min =3, message = "El nombre debe contener minimo 7 letras")
 	@Column(nullable = false, length = 100)
 	private String nombre;
 
@@ -43,14 +43,15 @@ public class Libro {
 	@Column(nullable = true)
 	private Integer cantidadReservada;
 
-	@NotNull(message = "Campo 'tarifa' obligatorio")
-	@Column(nullable = false)
-	private String tarifa;
-
 	@NotNull(message = "Campo 'categoria' obligatorio")
 	@ManyToOne
 	@JoinColumn(name = "id_categoria", nullable = false)
 	private Categoria categoria;
+	
+	@NotNull(message = "Campo 'tarifa' obligatorio")
+	@ManyToOne
+	@JoinColumn(name = "id_tarifa", nullable = false)
+	private Tarifa tarifa;
 	
 	@Column
 	private Boolean estado;

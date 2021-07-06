@@ -1,4 +1,4 @@
-package com.titamedia.Controller;
+package com.titamedia.controller;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +29,7 @@ public class MenuRestController {
 		return new ResponseEntity<List<Menu>>(menus, HttpStatus.OK);
 	}
 	
+
 	@PostMapping("/usuario")
 	public ResponseEntity<List<Menu>> listarPorUsuario(@RequestBody String nombre) throws Exception{
 		List<Menu> menus = new ArrayList<>();
