@@ -24,7 +24,7 @@ public class CategoriaServiceImpl extends CRUDImpl<Categoria, Integer> implement
 
 	@Override
 	public Page<Categoria> listarPageable(Pageable pageable) throws Exception {
-		Page<Categoria> categorias = CategoriaRepo.findAll(pageable);
+		Page<Categoria> categorias = CategoriaRepo.listarPageable(pageable);
 		
 		if(categorias.isEmpty()) {
 			throw new ModeloNotFoundException("No se ecnontraron datos"); 

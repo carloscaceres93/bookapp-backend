@@ -118,4 +118,9 @@ public class UsuarioServiceImpl implements IUsuarioService {
 		usuarioRepo.save(user.get());
 		return user.get();
 	}
+
+	@Override
+	public Usuario findOneByUsername(String username) throws Exception {
+		return usuarioRepo.findOneByUsername(username);
+	}
 }

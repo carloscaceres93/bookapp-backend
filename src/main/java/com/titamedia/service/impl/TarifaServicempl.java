@@ -24,7 +24,7 @@ public class TarifaServicempl extends CRUDImpl<Tarifa, Integer> implements ITari
 	
 	@Override
 	public Page<Tarifa> listarPageable(Pageable pageable) throws Exception {
-		Page<Tarifa> tarifas = tarifaRepo.findAll(pageable);
+		Page<Tarifa> tarifas = tarifaRepo.listarPageable(pageable);
 		
 		if(tarifas.isEmpty()) {
 			throw new ModeloNotFoundException("No se ecnontraron datos"); 

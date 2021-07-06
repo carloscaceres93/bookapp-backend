@@ -81,4 +81,14 @@ public class UsuarioRestController {
 		return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
 	}
 
+	@GetMapping("/prueba/{user}")
+	public EntityModel<Usuario> findOneByUsername(@PathVariable("user") String username) throws Exception {
+		Usuario obj = usuarioService.findOneByUsername(username);
+
+		EntityModel<Usuario> recurso = EntityModel.of(obj);
+		WebMvcLinkBuilder link = linkTo(methodOn(this.getClass()).findOneByUsername(username));
+		recurso.add(link.withRel("Reserva-recurso"));
+
+		return recurso;
+	}
 }

@@ -16,15 +16,15 @@ public class AuthServiceImpl {
 
 		switch (path) {
 		case "todos":
-			metodoRol = "ROLE_ADMINISTRADOR,ROLE_CLIENTE";
+			metodoRol = "ADMINISTRADOR,CLIENTE";
 			break;
 
 		case "admin":
-			metodoRol = "ROLE_ADMINISTRADOR";
+			metodoRol = "ADMINISTRADOR";
 			break;
 			
 		case "user":
-			metodoRol = "ROLE_CLIENTE";
+			metodoRol = "CLIENTE";
 			break;
 
 		}
